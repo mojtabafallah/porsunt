@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import Home from './Home';
-import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from './../assets/styles';
 
@@ -10,6 +10,7 @@ export default class Login extends Component {
     constructor() {
         super();
         this.state = {
+            isLoading: false,
             code: {
                 value: '',
                 error: ''
@@ -46,21 +47,23 @@ export default class Login extends Component {
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="کد تایید را وارد نمایید"
+                            keyboardType='numeric'
                             onChangeText={this.entenumber.bind(this)}
                             style={form.input}
                         />
                     </Item>
                     <Button full primary onPress={this.vertify.bind(this)}>
                         <Text> ارسال کد </Text>
+                        <Spinner color="white" style={{position: 'absolute'}} animating={this.state.isLoading} />
                     </Button>
                 </Content>
             </Container>
-
         )
 
     }
    async entenumber(text)
     {
+
         let mobile =await AsyncStorage.getItem('mobile');
         this.setState(
             {
@@ -98,6 +101,10 @@ export default class Login extends Component {
 
 
     async requestcheckSmsFromApi(param) {
+        this.setState(preState => ({
+            ...preState,
+            isLoading: true
+        }));
         let {code,mobile} = param;
 
         let response = await fetch('https://porsunt.com/api/register2', {
@@ -122,6 +129,11 @@ export default class Login extends Component {
         if (response.status === 502) {
             alert("کد نا معتبر است");
         }
+
+        this.setState(preState => ({
+            ...preState,
+            isLoading: false
+        }));
 
     }
 }

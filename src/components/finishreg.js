@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import Home from './Home';
-import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from './../assets/styles';
 
@@ -9,6 +9,7 @@ import {form} from './../assets/styles';
 export default class Login extends Component {
     componentWillMount() {
         this.state = {
+            isLoading: false,
             name: {
                 value: '',
                 error: ''
@@ -63,6 +64,7 @@ export default class Login extends Component {
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="کد ملی خود را وارد کنید"
+                            keyboardType='numeric'
                             onChangeText={this.entercodemelli.bind(this)}
                             style={form.input}
                         />
@@ -85,6 +87,7 @@ export default class Login extends Component {
                     </Item>
                     <Button full primary onPress={this.finishreg.bind(this)}>
                         <Text> تکمیل ثبت نام </Text>
+                        <Spinner color="white" style={{position: 'absolute'}} animating={this.state.isLoading} />
                     </Button>
                 </Content>
             </Container>
@@ -169,6 +172,10 @@ export default class Login extends Component {
 
 
     async requestRegisterFromApi(param) {
+        this.setState(preState => ({
+            ...preState,
+            isLoading: true
+        }));
         let {name,code_melli,password,password2,mobile} = param;
         name=name.value;
 
@@ -211,6 +218,11 @@ export default class Login extends Component {
             alert("خطایی به وجود آمده است دقت داشته باشد کلمه عبور باید حداقل 4 کاراکتر باشد. کد ملی وارد شده قبلا ثبت نام نکرده باشد. نام باید بصورت فارسی باشد. کد ملی باید معتبر باشد")
             //    console.log('error');
         }
+
+        this.setState(preState => ({
+            ...preState,
+            isLoading: false
+        }));
 
     }
 }

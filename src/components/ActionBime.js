@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import Home from './Home';
-import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from './../assets/styles';
 
@@ -11,6 +11,7 @@ export default class ActionBime extends Component {
         super();
         this._loadInitialState().done();
         this.state = {
+            isLoading: false,
             name: {
                 value: '',
                 error: ''
@@ -74,6 +75,7 @@ export default class ActionBime extends Component {
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="کد ملی بیمه گذار را وارد کنید"
+                            keyboardType='numeric'
                             onChangeText={this.entercodemelli.bind(this)}
                             style={form.input}
                         />
@@ -81,6 +83,7 @@ export default class ActionBime extends Component {
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="تلفن همراه بیمه گذار را وارد کنید"
+                            keyboardType='numeric'
                             onChangeText={this.entermobile.bind(this)}
                             style={form.input}
 
@@ -89,6 +92,7 @@ export default class ActionBime extends Component {
 
                     <Button full primary onPress={this.finishreg.bind(this)}>
                         <Text> ثبت بیمه </Text>
+                        <Spinner color="white" style={{position: 'absolute'}} animating={this.state.isLoading} />
                     </Button>
                 </Content>
             </Container>
@@ -194,6 +198,11 @@ export default class ActionBime extends Component {
 
 
     async requestActionFromApi(param) {
+        this.setState(preState => ({
+            ...preState,
+            isLoading: true
+        }));
+
         let {name, family, mobile, code_melli, type_bime, api_token} = param;
 
         let response = await fetch('https://porsunt.com/api/save_bime', {
@@ -223,6 +232,9 @@ export default class ActionBime extends Component {
             alert(response.status)
         }
 
-
+        this.setState(preState => ({
+            ...preState,
+            isLoading: false
+        }));
     }
 }

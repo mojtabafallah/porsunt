@@ -27,8 +27,13 @@ export default class Home extends React.Component {
     }
 
     handleBackPress = () => {
-
-        return true;  // Do nothing when back button is pressed
+        console.log(Actions.currentScene)
+        if (Actions.currentScene == "home") {
+            BackHandler.exitApp();
+//            return true;
+        }
+        return false;
+//         Actions.pop(null);  // Do nothing when back button is pressed
     }
 
     goBackScreen = () => {

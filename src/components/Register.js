@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import Home from './Home';
-import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from './../assets/styles';
 
@@ -10,6 +10,7 @@ export default class Login extends Component {
     constructor() {
         super();
         this.state = {
+            isLoading: false,
             mobile: {
                 value: '',
                 error: ''
@@ -17,11 +18,15 @@ export default class Login extends Component {
         }
     }
 
+    goBackScreen = () => {
+        Actions.pop();
+    }
+
     render() {
 
         return (
             <Container>
-                <Header noLeft>
+                <Header>
                     <Left>
                         <Button transparent>
                             <Icon name='arrow-back' onPress={this.goBackScreen.bind(this)} />
@@ -40,12 +45,14 @@ export default class Login extends Component {
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="شماره تلفن خود را وارد نمایید"
+                            keyboardType='numeric'
                             onChangeText={this.entenumberphone.bind(this)}
                             style={form.input}
                         />
                     </Item>
                     <Button full primary onPress={this.register.bind(this)}>
                         <Text> ارسال کد </Text>
+                        <Spinner color="white" style={{position: 'absolute'}} animating={this.state.isLoading} />
                     </Button>
                 </Content>
             </Container>
@@ -85,6 +92,10 @@ register()
 
 
     async requestSendSmsFromApi(param) {
+         this.setState(preState => ({
+            ...preState,
+            isLoading: true
+         }));
         let {mobile} = param;
         console.log(param);
         let response = await fetch('https://porsunt.com/api/register1', {
@@ -101,7 +112,7 @@ register()
         if(response.status===409)
         {
             alert(json.data.message);
-        }else
+        } else
         {
             alert(json.data.message);
             AsyncStorage.setItem('mobile',mobile);
@@ -109,7 +120,10 @@ register()
         }
 
 
-
+        this.setState(preState => ({
+            ...preState,
+            isLoading: false
+         }));
 
     }
 }

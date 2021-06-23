@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage, View} from 'react-native';
 import Home from './Home';
-import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from '../assets/styles';
 // import BackHandler from "react-native/Libraries/Utilities/BackHandler";
@@ -11,6 +11,7 @@ export default class Login extends Component {
     constructor() {
         super();
         this.state = {
+            isLoading: false,
             codemelli: {
                 value: '',
                 error: ''
@@ -21,6 +22,8 @@ export default class Login extends Component {
             }
         }
     }
+
+
 
     componentDidMount() {
         // BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -44,6 +47,7 @@ export default class Login extends Component {
     render() {
         const codemellierror = this.state.codemelli.error;
         const passworderror = this.state.password.error;
+        const isLoading = this.state.isLoading;
         return (
           <Container>
               <Header>
@@ -62,6 +66,7 @@ export default class Login extends Component {
                           <Input
                             placeholder="کد ملی"
                             style={form.input}
+                            keyboardType='numeric'
                             onChangeText={this.changeCodemelliInput.bind(this)}
                           />
                       </Item>
@@ -89,9 +94,11 @@ export default class Login extends Component {
                       <Button style={{width: '49%', margin: 10 , display: 'flex', justifyContent: 'center'}}  onPress={this.registeruser.bind(this)}>
                           <Text> ثبت نام </Text>
                       </Button>
-                      <Button style={{width: '49%', margin: 10, display: 'flex', justifyContent: 'center'}} primary onPress={this.login.bind(this)}>
+                      <Button disabled={this.state.isLoading} style={{width: '49%', margin: 10, display: 'flex', justifyContent: 'center'}} primary onPress={this.login.bind(this)}>
                           <Text> ورود </Text>
+                          <Spinner color="white" style={{position: 'absolute'}} animating={this.state.isLoading} />
                       </Button>
+
                       </View>
                   </Form>
               </Content>
@@ -166,6 +173,11 @@ export default class Login extends Component {
     }
 
     async requestLoginFromApi(params) {
+        this.setState(preState => ({
+            ...preState,
+            isLoading: true
+        }));
+
         try {
             let {code_melli, password} = params;
 
@@ -198,6 +210,11 @@ export default class Login extends Component {
                 console.log('error');
 
             }
+
+            this.setState(preState => ({
+                ...preState,
+                isLoading: false
+            }));
         } catch (error) {
             console.log(error);
         }

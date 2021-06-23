@@ -1,5 +1,5 @@
 import React from "react";
-import { AppRegistry, Image, StatusBar, AsyncStorage  } from "react-native";
+import { AppRegistry, Image, StatusBar, AsyncStorage, BackHandler } from "react-native";
 import {Actions} from "react-native-router-flux";
 
 
@@ -21,6 +21,9 @@ export default class SideBar extends React.Component {
       AsyncStorage.removeItem('apiToken');
       Actions.splash();
     }
+    exit = () => {
+      BackHandler.exitApp();
+    }
 
     render() {
 
@@ -32,12 +35,17 @@ export default class SideBar extends React.Component {
           route: Actions.home
         },
         {
-          name: 'Login',
-          title: 'خروج',
+          name: 'Logout',
+          title: 'خروچ از حساب',
           icon: 'arrow-back',
           route: this.logout
         },
-
+        {
+          name: 'Exit',
+          title: 'خروچ از برنامه',
+          icon: 'close',
+          route: this.exit
+        },
       ];
 
         return (
@@ -60,8 +68,8 @@ export default class SideBar extends React.Component {
                       button
                       onPress={() => data.route()}
                     >
-                      <Left style={{flex:0.7}}><Icon name={data.icon} /></Left>
-                      <Right style={{flex:0.3}}><Text>{data.title}</Text></Right>
+                      <Left style={{flex:0.6}}><Icon name={data.icon} /></Left>
+                      <Right style={{flex:0.4}}><Text>{data.title}</Text></Right>
                     </ListItem>
                   );
                 }}

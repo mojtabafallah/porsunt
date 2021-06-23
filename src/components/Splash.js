@@ -3,6 +3,8 @@ import {View, Text, Image, ActivityIndicator, AsyncStorage} from 'react-native';
 import {Container, Spinner} from 'native-base';
 import styles from './../assets/styles/index';
 import {Actions} from 'react-native-router-flux';
+import BackHandler from "react-native/Libraries/Utilities/BackHandler";
+
 export default class Splash extends Component
 {
     constructor() {
@@ -19,6 +21,18 @@ export default class Splash extends Component
                 Actions.login();
             }
         });
+    }
+
+    handleBackPress = () => {
+        return true;  // Do nothing when back button is pressed
+    }
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
     // componentDidMount()
     // {
