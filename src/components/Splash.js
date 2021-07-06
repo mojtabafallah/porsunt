@@ -60,7 +60,14 @@ const style=styles.index;
    async  CheckUserLogin() {
         try {
             let apiToken =await AsyncStorage.getItem('apiToken');
+            let code_melli =await AsyncStorage.getItem('code_melli');
+            let password =await AsyncStorage.getItem('password');
+
             //console.log(apiToken);
+            if (!code_melli || !password) {
+              return false;
+            }
+
             return apiToken === null
                  ? false
                 : await this.CheckUserLoginFromApi(apiToken);

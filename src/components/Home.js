@@ -62,6 +62,7 @@ export default class Home extends React.Component {
                   </Right>
               </Header>
               <Content>
+
                   <FlatList
                     data={this.state.bimes}
                     renderItem={this.renderItem}

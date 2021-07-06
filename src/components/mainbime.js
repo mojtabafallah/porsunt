@@ -1,5 +1,5 @@
 import React from 'react';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage, ScrollView } from "react-native";
 import {Container, Header, Right, Icon , Left ,Button, Content} from 'native-base'
 import {View, Text, FlatList} from 'react-native';
 import SubBime from "./subBimes";
@@ -36,11 +36,17 @@ export default class Home extends React.Component {
                   </Right>
               </Header>
               <Content>
-                  <FlatList
-                    data={this.state.subbimes}
-                    renderItem={this.renderItem}
-                    keyExtractor={item => item.id}
-                  />
+<View>
+    <FlatList
+      data={this.state.subbimes}
+      renderItem={this.renderItem}
+      keyExtractor={item => item.id}
+
+    />
+</View>
+
+
+
 
               </Content>
           </Container>

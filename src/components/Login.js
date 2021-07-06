@@ -195,14 +195,33 @@ export default class Login extends Component {
 
             });
 
-            let json = await response.json();
+            let loginData = await response.json();
 
 
             if (response.status === 200) {
                 console.log(code_melli);
                 console.log(password);
-                console.log(json.data);
-                this.setDataUser(json.data.api_token);
+                console.log(loginData.data);
+
+                try {
+
+                    let response = await fetch(`https://porsunt.com/api/infouser?code_melli=${code_melli}&password=${password}`, {
+                        method: "GET",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                    })
+
+                    console.log(`https://porsunt.com/api/infouser?code_melli=${code_melli}&password=${password}`)
+
+                    let json = await response.json();
+                    console.log({json});
+
+                    this.setDataUser(loginData.data.api_token, code_melli, password, json);
+                } catch (error) {
+                    console.log(error);
+                }
                 Actions.home();
 
             }
@@ -218,13 +237,17 @@ export default class Login extends Component {
         } catch (error) {
             console.log(error);
         }
-
     }
 
-    async setDataUser(api_token) {
+    async setDataUser(api_token, code_melli, password, userInfo) {
         try {
 
             await AsyncStorage.setItem('apiToken', api_token)
+            await AsyncStorage.setItem('code_melli', code_melli)
+            await AsyncStorage.setItem('password', password)
+            await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+
+            Actions.drawerClose()
 
         } catch (error) {
             console.log(error);
