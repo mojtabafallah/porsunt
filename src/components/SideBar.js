@@ -17,13 +17,13 @@ import {
 
 export default class SideBar extends React.Component {
 
-    logout = async () => {
+    logout = () => {
       AsyncStorage.removeItem('apiToken');
       AsyncStorage.removeItem('code_melli')
       AsyncStorage.removeItem('password')
       Actions.splash();
     }
-    exit = async () => {
+    exit = () => {
       BackHandler.exitApp();
     }
 
@@ -56,9 +56,19 @@ export default class SideBar extends React.Component {
        const code_melli = await AsyncStorage.getItem('code_melli');
        const password = await AsyncStorage.getItem('password');
        const userInfo = await AsyncStorage.getItem('userInfo');
+
+
+
        this.setState({
          userData: JSON.parse(userInfo)
-       })
+
+       }
+
+
+
+
+
+       )
 
 
        // try {
@@ -90,6 +100,18 @@ export default class SideBar extends React.Component {
        //       this.setState({
        //         userData: JSON.parse(userInfo)
        //       })
+
+       global.value1 = await AsyncStorage.getItem('userInfo');
+       if (global.value1 === null)
+       {
+         global.value1 ="first";
+         // console.log("first");
+
+       }else
+       {
+         console.log(global.value1);
+
+       }
 
     }
 
@@ -132,8 +154,11 @@ export default class SideBar extends React.Component {
                 >
                     <Icon name="close" />
                  </Button>
-              <Image source={{uri: 'https://porsunt.com/storage/'+this.state.userData.avatar}} style={{ width: 100, height: 100, marginLeft: 'auto', marginRight: 'auto' }} />
-              <Text style={{width: '100%', textAlign: 'center', marginTop: 15, marginBottom: 15}}>{this.state.userData.name}</Text>
+
+
+              { global.value1 !== "first" && global.value1 !== undefined   ? <Image source={{uri: 'https://porsunt.com/storage/'+this.state.userData.avatar}} style={{ width: 100, height: 100, marginLeft: 'auto', marginRight: 'auto' }} /> : console.log("first") }
+              {  global.value1 !== "first" && global.value1 !== undefined   ? <Text style={{width: '100%', textAlign: 'center', marginTop: 15, marginBottom: 15}}>{this.state.userData.name}</Text> : console.log(global.value1) }
+
               <List
                 dataArray={routes}
                 contentContainerStyle={{ marginTop: 20 }}

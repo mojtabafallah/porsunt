@@ -7,6 +7,8 @@ export default class Bime extends Component {
     constructor(props) {
         super();
 
+        console.log('props ===========',props)
+
         this.state = {
             codebimes: {
                 value: ''
@@ -64,7 +66,9 @@ export default class Bime extends Component {
        // console.log()
       //  let {databime} = this.state;
        // console.log(databime.value.id);
-        var codebimes1 = this.state.databime.value.bime.id;
+        var codebimes1 = this.props.bime.id;
+
+        console.log('data_subbime =====',codebimes1)
 
         Actions.mainbime({data_subbime: codebimes1});
     }

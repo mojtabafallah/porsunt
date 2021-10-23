@@ -61,13 +61,7 @@ export default class Reports extends Component {
 
         this.state = {
              reports: '',
-            codebimes: {
-                value: ''
-            },
-            databime:
-        {
-            value:props
-        }
+
         }
     }
 
@@ -199,12 +193,12 @@ export default class Reports extends Component {
 
 
 
-    getsubbime() {
-       // console.log()
-      //  let {databime} = this.state;
-       // console.log(databime.value.id);
-        var codebimes1 = this.state.databime.value.bime.id;
-
-        Actions.mainbime({data_subbime: codebimes1});
-    }
+    // getsubbime() {
+    //    // console.log()
+    //   //  let {databime} = this.state;
+    //    // console.log(databime.value.id);
+    //     var codebimes1 = this.state.databime.value.bime.id;
+    //
+    //     Actions.mainbime({data_subbime: codebimes1});
+    // }
 }

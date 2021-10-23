@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage , Alert} from 'react-native';
 import Home from './Home';
 import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
@@ -127,7 +127,15 @@ export default class Login extends Component {
 
         }
         if (response.status === 502) {
-            alert("کد نا معتبر است");
+//            alert("کد نا معتبر است");
+             Alert.alert(
+                 "خطا در ارسال اطلاعات",
+                 "کد نا معتبر است",
+                 [
+
+                   { text: "تایید" }
+                 ]
+            );
         }
 
         this.setState(preState => ({

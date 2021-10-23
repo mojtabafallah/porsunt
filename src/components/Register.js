@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Alert} from 'react-native';
 import Home from './Home';
 import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
@@ -109,14 +109,45 @@ register()
             })
         });
         let json = await  response.json();
-        if(response.status===409)
+
+        console.log({json})
+
+        if(response.status===200)
         {
-            alert(json.data.message);
-        } else
-        {
-            alert(json.data.message);
+
+            Alert.alert(
+                 "پیغام",
+                 json.data.message,
+                 [
+
+                   { text: "تایید" }
+                 ]
+            );
             AsyncStorage.setItem('mobile',mobile);
             Actions.vertify();
+
+//            alert(json.message);
+
+
+        } else if (response.status===402)
+         Alert.alert(
+              "پیغام",
+              json.message,
+              [
+
+                { text: "تایید" }
+              ]
+         );
+         else
+        {
+            Alert.alert(
+                  "پیغام",
+                  json.message,
+                  [
+
+                    { text: "تایید" }
+                  ]
+             );
         }
 
 

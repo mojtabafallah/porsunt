@@ -12,7 +12,7 @@ export default class Home extends React.Component {
         this.state = {
             subbimes: []
         }
-
+        console.log('dfdfdf props=', props)
         this.getSubBime(props.data_subbime)
     }
 
@@ -41,7 +41,6 @@ export default class Home extends React.Component {
       data={this.state.subbimes}
       renderItem={this.renderItem}
       keyExtractor={item => item.id}
-
     />
 </View>
 
@@ -58,10 +57,11 @@ export default class Home extends React.Component {
     }
 
     getSubBime(codebime) {
-
+      console.log('dfdfdf codebime=', codebime)
         fetch('https://porsunt.com/api/subbimes?codebimes=' + codebime)
           .then((response) => response.json())
           .then(data => {
+            console.log('dfdfdf =', data)
               this.setState({
                   subbimes: data
               })

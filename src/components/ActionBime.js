@@ -1,10 +1,26 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, StyleSheet, Alert } from 'react-native';
 import Home from './Home';
 import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {form} from './../assets/styles';
 
+const styles = StyleSheet.create({
+     alertBox: {
+        width: '90%',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+        backgroundColor: '#81a0bb',
+        color: 'white',
+        borderRadius: 7,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        marginBottom: 15,
+        marginTop: 15,
+        paddingRight: 10,
+      },
+})
 
 export default class ActionBime extends Component {
     constructor(props) {
@@ -58,6 +74,9 @@ export default class ActionBime extends Component {
                     </Right>
                 </Header>
                 <Content>
+                     <Text style={styles.alertBox}>
+                      درهنگام وارد کردن اطلاعات: نام و نام خانوادگی بصورت کامل فارسی باشد، کدملی بصورت صحیح وارد و متعلق به شخص بیمه گذار باشد، تلفن همراه بصورت صحیح وارد و متعلق به شخص بیمه گذار باشد
+                    </Text>
                     <Item last rounded style={form.item}>
                         <Input
                             placeholder="نام  بیمه گذار را وارد کنید"
@@ -224,12 +243,28 @@ export default class ActionBime extends Component {
 
         if (response.status === 200) {
             //     Actions.finishreg();
-            alert("ثبت بیمه با موفقیت انجام شد");
+
+             Alert.alert(
+                 "اطلاعات ثبت شد",
+                 "ثبت بیمه با موفقیت انجام شد",
+                 [
+
+                   { text: "تایید" }
+                 ]
+            );
             Actions.home();
         }else
 
         {
-            alert(response.status)
+
+            Alert.alert(
+                 "خطا در ارسال اطلاعات",
+                 "برخی از مقادیر وارد شده اشتباه میباشند!",
+                 [
+
+                   { text: "تایید" }
+                 ]
+            );
         }
 
         this.setState(preState => ({

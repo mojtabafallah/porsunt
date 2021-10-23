@@ -16,25 +16,26 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
-        <Stack key="root">
-          <Scene key="login" hideNavBar initial={true} component={Login}/>
-          <Scene key="splash" hideNavBar component={Splash} initial/>
-          <Scene key="register" hideNavBar component={Register}/>
-          <Drawer
-            key='drawer'
-            drawerPosition='left'
-            contentComponent={SideBar}
-            hideNavBar
-            tapToClose
-          >
-            <Scene key="home" hideNavBar component={Home}/>
-            <Scene key="vertify" hideNavBar component={vertify}/>
-            <Scene key="finishreg" hideNavBar component={finishreg}/>
-            <Scene key="mainbime" hideNavBar component={mainbime}/>
-            <Scene key="reports" hideNavBar component={Reports}/>
-            <Scene key="actionbime" hideNavBar component={ActionBime}/>
-          </Drawer>
-        </Stack>
+        <Drawer
+          key='userProfile'
+          drawerPosition='left'
+          contentComponent={SideBar}
+          hideNavBar
+          tapToClose
+        >
+          <Scene key="root" hideNavBar>
+            <Scene key="login" component={Login}/>
+            <Scene key="home" component={Home}/>
+            <Scene key="register" component={Register}/>
+            <Scene key="splash" component={Splash} initial/>
+            <Scene key="home" component={Home}/>
+            <Scene key="vertify" component={vertify}/>
+            <Scene key="finishreg" component={finishreg}/>
+            <Scene key="reports" component={Reports}/>
+            <Scene key="mainbime" component={mainbime}/>
+            <Scene key="actionbime" component={ActionBime}/>
+          </Scene>
+        </Drawer>
       </Router>
 
     )

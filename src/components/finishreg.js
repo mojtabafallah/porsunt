@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Alert} from 'react-native';
 import Home from './Home';
 import {Container, Header, Content, Item, Input, Icon, Text, Form, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux';
@@ -204,18 +204,68 @@ export default class Login extends Component {
       //  let json = await response.json();
 
         if (response.status === 200) {
-       //     Actions.finishreg();
-            alert("خوش آمدید ثبت نام شما با موفقیت انجام شد");
-            Actions.home();
+
+
+              let userInfoResponse = await fetch(`https://porsunt.com/api/infouser?code_melli=${code_melli}&password=${password}`, {
+                 method: "GET",
+                 headers: {
+                     'Accept': 'application/json',
+                     'Content-Type': 'application/json'
+                 },
+             })
+
+
+             if (userInfoResponse.status === 200) {
+
+                 let json = await userInfoResponse.json();
+                 console.log({json});
+
+                 await AsyncStorage.setItem('apiToken', json.tokenapi)
+                 await AsyncStorage.setItem('code_melli', code_melli)
+                 await AsyncStorage.setItem('password', password)
+                 await AsyncStorage.setItem('userInfo', JSON.stringify(json))
+
+
+//                 this.setDataUser(response.data.tokenapi, code_melli, password, json);
+
+
+                  Alert.alert(
+                      "ثبت نام موفق",
+                      "خوش آمدید ثبت نام شما با موفقیت انجام شد",
+                      [
+
+                        { text: "تایید" }
+                      ]
+                 );
+
+                 Actions.home();
+             }
+
 
 
         }
         if (response.status === 502) {
-            alert("کلمه عبور مطابقت ندارد")
+//            alert("کلمه عبور مطابقت ندارد")
+                 Alert.alert(
+                     "خطا در ارسال اطلاعات",
+                     "کلمه عبور مطابقت ندارد",
+                     [
+
+                       { text: "تایید" }
+                     ]
+                );
         //    console.log('error');
         }
         if (response.status === 503) {
-            alert("خطایی به وجود آمده است دقت داشته باشد کلمه عبور باید حداقل 4 کاراکتر باشد. کد ملی وارد شده قبلا ثبت نام نکرده باشد. نام باید بصورت فارسی باشد. کد ملی باید معتبر باشد")
+             Alert.alert(
+                 "خطا در ارسال اطلاعات",
+                 "خطایی به وجود آمده است دقت داشته باشد کلمه عبور باید حداقل 4 کاراکتر باشد. کد ملی وارد شده قبلا ثبت نام نکرده باشد. نام باید بصورت فارسی باشد. کد ملی باید معتبر باشد",
+                 [
+
+                   { text: "تایید" }
+                 ]
+            );
+//            alert("خطایی به وجود آمده است دقت داشته باشد کلمه عبور باید حداقل 4 کاراکتر باشد. کد ملی وارد شده قبلا ثبت نام نکرده باشد. نام باید بصورت فارسی باشد. کد ملی باید معتبر باشد")
             //    console.log('error');
         }
 
@@ -225,4 +275,18 @@ export default class Login extends Component {
         }));
 
     }
+
+    async setDataUser(api_token, code_melli, password, userInfo) {
+        try {
+
+            await AsyncStorage.setItem('apiToken', api_token)
+            await AsyncStorage.setItem('code_melli', code_melli)
+            await AsyncStorage.setItem('password', password)
+            await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
